@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Онлайн-кинотеатр</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f2f5;
+    margin: 0;
+    padding: 0;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #1E90FF;
+    color: #fff;
+    padding: 15px 20px;
+}
+header span {
+    font-weight: bold;
+    font-size: 18px;
+}
+header button {
+    margin-left: 10px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    background: #fff;
+    color: #1E90FF;
+    transition: 0.2s;
+}
+header button:hover {
+    background: #e0e0e0;
+}
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    gap: 20px;
+}
+.card {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    min-width: 180px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.card:hover {
+    transform: scale(1.03);
+}
+h3 { margin-top: 0; }
+.seats-container { margin-top: 15px; }
+.seat {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    margin: 5px;
+    text-align: center;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+.seat.free { background: #7CFC00; }
+.seat.booked { background: red; color: #fff; cursor: not-allowed; }
+.seat.my-booked { background: #1E90FF; color: #fff; }
+#admin-panel {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.admin-session {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid #ddd;
+}
+.admin-session button {
+    margin-left: 5px;
+    padding: 4px 8px;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<header>
+    <span id="user-info">Гость</span>
+    <div>
+        <button id="btn-register">Регистрация</button>
+        <button id="btn-login">Вход</button>
+        <button id="btn-logout" style="display:none;">Выход</button>
+    </div>
+</header>
+
+<div class="container" id="movies"></div>
+<div class="container" id="sessions"></div>
+<div class="seats-container" id="seats"></div>
+
+<div id="admin-panel">
+    <h3>Панель администратора</h3>
+    <div id="admin-sessions"></div>
+</div>
+
+<script>
+const API_URL = 'http://127.0.0.1:8000';
+let currentUser = null;
+
+function saveUserToLocal(user) {
+    currentUser = user;
+    localStorage.setItem("currentUser", JSON.stringify(user));
+    document.getElementById("user-info").innerText = user.username + (user.is_admin ? " (админ)" : "");
+    document.getElementById("btn-register").style.display = "none";
+    document.getElementById("btn-login").style.display = "none";
+    document.getElementById("btn-logout").style.display = "inline-block";
+    if(user.is_admin) document.getElementById("admin-panel").style.display = "block";
+}
+
+function logout() {
+    localStorage.removeItem("currentUser");
+    currentUser = null;
+    document.getElementById("user-info").innerText = "Гость";
+    document.getElementById("btn-register").style.display = "inline-block";
+    document.getElementById("btn-login").style.display = "inline-block";
+    document.getElementById("btn-logout").style.display = "none";
+    document.getElementById("admin-panel").style.display = "none";
+    document.getElementById("sessions").innerHTML = "";
+    document.getElementById("seats").innerHTML = "";
+    document.getElementById("admin-sessions").innerHTML = "";
+}
+
+function loadUserFromLocal() {
+    const user = JSON.parse(localStorage.getItem("currentUser"));
+    if(user) saveUserToLocal(user);
+}
+
+async function registerUser() {
+    const username = prompt("Имя пользователя:");
+    const password = prompt("Пароль:");
+    if(!username || !password) return alert("Введите имя и пароль");
+    const res = await fetch(`${API_URL}/register`, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({username,password})
+    });
+    const data = await res.json();
+    if(res.ok){ alert(data.message); await loginUser(username,password); }
+    else alert(data.detail);
+}
+
+async function loginUser(username=null,password=null){
+    if(!username) username = prompt("Имя пользователя:");
+    if(!password) password = prompt("Пароль:");
+    const res = await fetch(`${API_URL}/login`,{
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({username,password})
+    });
+    const data = await res.json();
+    if(res.ok) {
+        saveUserToLocal(data);
+        loadAdminSessions();
+    }
+    else alert(data.detail);
+}
+
+async function loadMovies(){
+    const res = await fetch(`${API_URL}/movies`);
+    const movies = await res.json();
+    const div = document.getElementById('movies');
+    div.innerHTML = "<h3>Фильмы:</h3>";
+    movies.forEach(m=>{
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerText = m.title;
+        card.onclick = () => loadSessions(m.id);
+        div.appendChild(card);
+    });
+}
+
+async function loadSessions(movieId){
+    const res = await fetch(`${API_URL}/sessions/${movieId}`);
+    const sessions = await res.json();
+    const div = document.getElementById('sessions');
+    div.innerHTML = "<h3>Сеансы:</h3>";
+    sessions.forEach(s=>{
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerText = `Время: ${s.time}`;
+        card.onclick = () => showSeats(s);
+        div.appendChild(card);
+    });
+    if(currentUser && currentUser.is_admin) {
+        loadAdminSessions();
+    }
+}
+
+function showSeats(session){
+    if(!currentUser) return alert("Сначала войдите в систему");
+    const div = document.getElementById('seats');
+    div.innerHTML = `<h3>Места (Сеанс ${session.time}):</h3>`;
+    for(let i=1;i<=10;i++){
+        const seat = document.createElement('div');
+        seat.className='seat free';
+        seat.innerText=i;
+
+        const bookingIndex = session.seats_booked.findIndex(s => s.startsWith(i+"_"));
+        if(bookingIndex !== -1){
+            const username = session.seats_booked[bookingIndex].split("_")[1];
+            if(username===currentUser.username) seat.className='seat my-booked';
+            else seat.className='seat booked';
+        }
+
+        seat.onclick = async ()=>{
+            if(seat.classList.contains('booked')) return;
+            const isMySeat = seat.classList.contains('my-booked');
+            const action = isMySeat ? "Отменить бронь?" : "Забронировать место?";
+            if(!confirm(action)) return;
+
+            const url = isMySeat ? `${API_URL}/cancel` : `${API_URL}/book`;
+            const res = await fetch(url,{
+                method:'POST', headers:{'Content-Type':'application/json'},
+                body: JSON.stringify({session_id: session.id, seat_number:i, username:currentUser.username})
+            });
+            const data = await res.json();
+            if(res.ok){
+                seat.className = isMySeat ? 'seat free' : 'seat my-booked';
+                if(isMySeat){
+                    session.seats_booked = session.seats_booked.filter(s => s !== `${i}_${currentUser.username}`);
+                } else {
+                    session.seats_booked.push(`${i}_${currentUser.username}`);
+                }
+                loadAdminSessions();
+            } else {
+                alert(data.detail);
+            }
+        };
+        div.appendChild(seat);
+    }
+}
+
+async function loadAdminSessions(){
+    if(!currentUser || !currentUser.is_admin) return;
+    const resMovies = await fetch(`${API_URL}/movies`);
+    const movies = await resMovies.json();
+    const container = document.getElementById('admin-sessions');
+    container.innerHTML = "<h4>Управление сеансами:</h4>";
+    for(const m of movies){
+        const res = await fetch(`${API_URL}/sessions/${m.id}`);
+        const sessions = await res.json();
+        sessions.forEach(s=>{
+            const div = document.createElement('div');
+            div.className = 'admin-session';
+            div.innerHTML = `
+                <span>${m.title} - ${s.time}</span>
+                <div>
+                    <button onclick="editSession(${s.id})">Изменить</button>
+                    <button onclick="deleteSession(${s.id})">Удалить</button>
+                    <button onclick="clearBookings(${s.id})">Очистить брони</button>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    }
+}
+
+async function editSession(sessionId){
+    const newTime = prompt("Новое время сеанса (например 20:00):");
+    if(!newTime) return;
+    const res = await fetch(`${API_URL}/sessions/${sessionId}/edit?username=${currentUser.username}&time=${newTime}`, {method:'PUT'});
+    const data = await res.json();
+    alert(data.message || data.detail);
+    loadMovies();
+}
+
+async function deleteSession(sessionId){
+    if(!confirm("Удалить сеанс?")) return;
+    const res = await fetch(`${API_URL}/sessions/${sessionId}?username=${currentUser.username}`, {method:'DELETE'});
+    const data = await res.json();
+    alert(data.message || data.detail);
+    loadMovies();
+}
+
+async function clearBookings(sessionId){
+    if(!confirm("Удалить все брони для этого сеанса?")) return;
+    const resMovies = await fetch(`${API_URL}/movies`);
+    const movies = await resMovies.json();
+    for(const m of movies){
+        const res = await fetch(`${API_URL}/sessions/${m.id}`);
+        const sessions = await res.json();
+        const session = sessions.find(s => s.id === sessionId);
+        if(!session) continue;
+        for(const seatStr of session.seats_booked){
+            const seat_number = parseInt(seatStr.split("_")[0]);
+            const username = seatStr.split("_")[1];
+            await fetch(`${API_URL}/sessions/${sessionId}/booking?seat_number=${seat_number}&username=${username}&admin_username=${currentUser.username}`, {method:'DELETE'});
+        }
+    }
+    alert("Все брони удалены");
+    loadMovies();
+}
+
+document.getElementById("btn-register").onclick = registerUser;
+document.getElementById("btn-login").onclick = () => loginUser();
+document.getElementById("btn-logout").onclick = logout;
+
+loadUserFromLocal();
+loadMovies();
+</script>
+
+</body>
+</html>
