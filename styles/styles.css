@@ -5,14 +5,6 @@ body {
     color: #333;
 }
 
-.movie-placeholder {
-    width: 100%;
-    height: 200px;
-    background: #ccc;
-    border-radius: 8px;
-    margin: 0 auto 10px auto;
-}
-
 .header {
     background: #1E90FF;
     padding: 15px 25px;
@@ -49,27 +41,21 @@ body {
     text-decoration: none;
 }
 
-.btn:hover {
-    background: #e5e5e5;
-}
+.btn:hover { background: #e5e5e5; }
 
 .btn-secondary {
     background: #4CAF50;
     color: #fff;
 }
 
-.btn-secondary:hover {
-    background: #45a049;
-}
+.btn-secondary:hover { background: #45a049; }
 
 .btn-danger {
     background: #ff4d4d;
     color: #fff;
 }
 
-.btn-danger:hover {
-    background: #cc0000;
-}
+.btn-danger:hover { background: #cc0000; }
 
 .content {
     padding: 20px;
@@ -96,10 +82,21 @@ body {
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     cursor: pointer;
     transition: .2s;
+    border: 2px solid transparent;
 }
 
-.card:hover {
-    transform: scale(1.05);
+.card:hover { transform: scale(1.05); }
+
+.card.active {
+    border-color: #1E90FF;
+}
+
+.movie-placeholder {
+    width: 100%;
+    height: 200px;
+    background: #ccc;
+    border-radius: 8px;
+    margin: 0 auto 10px auto;
 }
 
 .seats {
@@ -116,11 +113,14 @@ body {
     line-height: 45px;
     font-weight: bold;
     cursor: pointer;
+    border: 2px solid transparent;
 }
 
 .seat.free { background: #7CFC00; }
 .seat.booked { background: #ff4444; color: #fff; cursor: not-allowed; }
 .seat.my-booked { background: #1E90FF; color: #fff; }
+
+.seat.active { border-color: #1E90FF; }
 
 .auth-container {
     width: 320px;
@@ -146,4 +146,20 @@ body {
     background: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+}
+
+.movie-poster {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.movie-genres, .movie-description {
+    margin: 4px 0;
+    font-size: 0.9em;
+}
+
+.card.active {
+    border: 2px solid #007BFF;
 }

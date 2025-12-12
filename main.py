@@ -26,6 +26,9 @@ class CinemaHall(BaseModel):
 class Movie(BaseModel):
     id: int
     title: str
+    description: str
+    genres: List[str]
+    image_url: str
 
 class Session(BaseModel):
     id: int
@@ -41,7 +44,24 @@ class Booking(BaseModel):
 
 users: List[User] = [User(username="admin", password="admin123", is_admin=True)]
 halls: List[CinemaHall] = [CinemaHall(id=1, name="Зал 1", seats_total=10)]
-movies: List[Movie] = [Movie(id=1, title="Титаник"), Movie(id=2, title="Интерстеллар")]
+
+movies: List[Movie] = [
+    Movie(
+        id=1,
+        title="Титаник",
+        description="История любви на фоне трагедии затонувшего корабля.",
+        genres=["Драма", "Романтика", "История"],
+        image_url="https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?auto=format&fit=crop&w=400&q=80"
+    ),
+    Movie(
+        id=2,
+        title="Интерстеллар",
+        description="Команда исследователей отправляется в космос для спасения человечества.",
+        genres=["Фантастика", "Приключения", "Драма"],
+        image_url="https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?auto=format&fit=crop&w=400&q=80"
+    ),
+]
+
 sessions: List[Session] = [
     Session(id=1, movie_id=1, hall_id=1, time="18:00"),
     Session(id=2, movie_id=1, hall_id=1, time="21:00"),
