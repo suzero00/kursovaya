@@ -1,0 +1,149 @@
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #eef2f7;
+    color: #333;
+}
+
+.movie-placeholder {
+    width: 100%;
+    height: 200px;
+    background: #ccc;
+    border-radius: 8px;
+    margin: 0 auto 10px auto;
+}
+
+.header {
+    background: #1E90FF;
+    padding: 15px 25px;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-label {
+    margin-right: 15px;
+    font-weight: bold;
+}
+
+.btn {
+    background: #fff;
+    color: #1E90FF;
+    font-weight: bold;
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background: #e5e5e5;
+}
+
+.btn-secondary {
+    background: #4CAF50;
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background: #45a049;
+}
+
+.btn-danger {
+    background: #ff4d4d;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background: #cc0000;
+}
+
+.content {
+    padding: 20px;
+}
+
+.section-title {
+    margin-top: 25px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #222;
+}
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.card {
+    background: #fff;
+    width: 200px;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: .2s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.seats {
+    margin-top: 15px;
+}
+
+.seat {
+    display: inline-block;
+    width: 45px;
+    height: 45px;
+    border-radius: 8px;
+    margin: 4px;
+    text-align: center;
+    line-height: 45px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.seat.free { background: #7CFC00; }
+.seat.booked { background: #ff4444; color: #fff; cursor: not-allowed; }
+.seat.my-booked { background: #1E90FF; color: #fff; }
+
+.auth-container {
+    width: 320px;
+    margin: 80px auto;
+    padding: 25px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.input {
+    width: 90%;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.admin-panel {
+    margin-top: 30px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+}

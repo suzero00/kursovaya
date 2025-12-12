@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Регистрация</title>
+<link rel="stylesheet" href="../styles/styles.css">
+</head>
+<body>
+
+<div class="auth-container">
+    <h2>Регистрация</h2>
+
+    <input id="username" class="input" placeholder="Логин">
+    <input id="password" type="password" class="input" placeholder="Пароль">
+
+    <button class="btn btn-secondary" onclick="registerUser()">Зарегистрироваться</button>
+
+    <p>Уже есть аккаунт? <a href="login.html">Войти</a></p>
+</div>
+
+<script>
+async function registerUser() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    const res = await fetch("http://127.0.0.1:8000/register", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({username,password})
+    });
+
+    const data = await res.json();
+
+    if(res.ok){
+        alert(data.message);
+        window.location.href = "login.html";
+    } else alert(data.detail);
+}
+</script>
+
+</body>
+</html>
