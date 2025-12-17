@@ -1,4 +1,4 @@
-const API_URL = '';
+const API_URL = window.location.origin;
 let currentUser = null;
 let selectedMovieCard = null;
 let selectedSessionCard = null;
@@ -75,7 +75,6 @@ async function loginUser(username, password) {
     }
 }
 
-// ====== Фильмы ======
 async function loadMovies() {
     const res = await fetch(`${API_URL}/movies`);
     const movies = await res.json();
@@ -109,7 +108,6 @@ async function loadMovies() {
 });
 }
 
-// ====== Сеансы ======
 async function loadSessions(movieId) {
     const res = await fetch(`${API_URL}/sessions/${movieId}`);
     const sessions = await res.json();
@@ -188,7 +186,6 @@ function showSeats(session) {
     }
 }
 
-// ====== Панель администратора ======
 async function loadAdminSessions() {
     if (!currentUser?.is_admin) return;
 
@@ -214,7 +211,6 @@ async function loadAdminSessions() {
     }
 }
 
-// ====== Редактирование/Удаление ======
 async function editSession(sessionId){
     const newTime = prompt("Введите новое время:");
     if (!newTime) return;

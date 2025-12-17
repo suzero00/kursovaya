@@ -15,7 +15,7 @@
 
     <button class="btn btn-secondary" onclick="registerUser()">Зарегистрироваться</button>
 
-    <p>Уже есть аккаунт? <a href="login.html">Войти</a></p>
+    <p>Уже есть аккаунт? <a href="/login">Войти</a></p>
 </div>
 
 <script>
@@ -25,7 +25,7 @@ async function registerUser() {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    const res = await fetch("${API_URL}/register", {
+    const res = await fetch(`${API_URL}/register`, {
         method: "POST",
         headers: {"Content-Type":"application/json"},
         body: JSON.stringify({username,password})

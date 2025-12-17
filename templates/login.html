@@ -15,7 +15,7 @@
 
     <button class="btn" onclick="login()">Войти</button>
 
-    <p>Нет аккаунта? <a href="register.html">Регистрация</a></p>
+    <p>Нет аккаунта? <a href="/register">Регистрация</a></p>
 </div>
 
 <script>
@@ -25,7 +25,7 @@ async function login() {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    const res = await fetch("${API_URL}/login", {
+    const res = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: {"Content-Type":"application/json"},
         body: JSON.stringify({username,password})
