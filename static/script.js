@@ -1,4 +1,4 @@
-const API_URL = 'http://127.0.0.1:8000';
+const API_URL = '';
 let currentUser = null;
 let selectedMovieCard = null;
 let selectedSessionCard = null;
@@ -54,7 +54,7 @@ async function registerUser(username, password) {
     const data = await res.json();
     if (res.ok) {
         alert("Регистрация выполнена!");
-        location.href = "login.html";
+        location.href = "/login";
     } else {
         alert(data.detail);
     }
@@ -69,7 +69,7 @@ async function loginUser(username, password) {
     const data = await res.json();
     if (res.ok) {
         saveUser(data);
-        location.href = "index.html";
+        location.href = "/";
     } else {
         alert(data.detail);
     }

@@ -2,8 +2,12 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse, FileResponse
 
 app = FastAPI()
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 app.add_middleware(
     CORSMiddleware,
@@ -67,6 +71,18 @@ sessions: List[Session] = [
     Session(id=2, movie_id=1, hall_id=1, time="21:00"),
     Session(id=3, movie_id=2, hall_id=1, time="19:00"),
 ]
+
+@app.get("/", response_class=HTMLResponse)
+def index():
+    return FileResponse("templates/index.html")
+
+@app.get("/login", response_class=HTMLResponse)
+def login_page():
+    return FileResponse("templates/login.html")
+
+@app.get("/register", response_class=HTMLResponse)
+def register_page():
+    return FileResponse("templates/register.html")
 
 @app.post("/register")
 def register(user: User):
