@@ -135,7 +135,6 @@ async function loadSessions(movieId) {
     if (currentUser?.is_admin) loadAdminSessions();
 }
 
-// ====== Места ======
 function showSeats(session) {
     if (!currentUser) {
         alert("Войдите в аккаунт");

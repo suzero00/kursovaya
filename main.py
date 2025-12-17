@@ -51,14 +51,14 @@ movies: List[Movie] = [
         title="Титаник",
         description="История любви на фоне трагедии затонувшего корабля.",
         genres=["Драма", "Романтика", "История"],
-        image_url="https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?auto=format&fit=crop&w=400&q=80"
+        image_url="https://m.media-amazon.com/images/M/MV5BYzYyN2FiZmUtYWYzMy00MzViLWJkZTMtOGY1ZjgzNWMwN2YxXkEyXkFqcGc%40._V1_FMjpg_UX1000_.jpg"
     ),
     Movie(
         id=2,
         title="Интерстеллар",
         description="Команда исследователей отправляется в космос для спасения человечества.",
         genres=["Фантастика", "Приключения", "Драма"],
-        image_url="https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?auto=format&fit=crop&w=400&q=80"
+        image_url="https://film-grab.com/wp-content/uploads/2015/04/35-512.jpg"
     ),
 ]
 
