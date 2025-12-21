@@ -64,6 +64,62 @@ movies: List[Movie] = [
         genres=["Фантастика", "Приключения", "Драма"],
         image_url="https://film-grab.com/wp-content/uploads/2015/04/35-512.jpg"
     ),
+    Movie(
+        id=3,
+        title="Начало",
+        description="Вор, способный проникать в сны, получает необычное задание.",
+        genres=["Фантастика", "Боевик", "Триллер"],
+        image_url="https://m.media-amazon.com/images/I/81p+xe8cbnL._AC_SY679_.jpg"
+    ),
+    Movie(
+        id=4,
+        title="Матрица",
+        description="Программист узнаёт, что реальность — это иллюзия.",
+        genres=["Фантастика", "Боевик"],
+        image_url="https://m.media-amazon.com/images/I/51EG732BV3L.jpg"
+    ),
+    Movie(
+        id=5,
+        title="Форрест Гамп",
+        description="История жизни простого человека с большим сердцем.",
+        genres=["Драма", "Комедия"],
+        image_url="https://m.media-amazon.com/images/I/61+9F8N1Z0L._AC_SY679_.jpg"
+    ),
+    Movie(
+        id=6,
+        title="Зелёная миля",
+        description="Надзиратель тюрьмы сталкивается с настоящим чудом.",
+        genres=["Драма", "Фэнтези"],
+        image_url="https://m.media-amazon.com/images/I/51NiGlapXlL.jpg"
+    ),
+    Movie(
+        id=7,
+        title="Бойцовский клуб",
+        description="Офисный работник создаёт подпольный бойцовский клуб.",
+        genres=["Драма", "Триллер"],
+        image_url="https://m.media-amazon.com/images/I/51v5ZpFyaFL.jpg"
+    ),
+    Movie(
+        id=8,
+        title="Гладиатор",
+        description="Римский генерал становится гладиатором.",
+        genres=["История", "Драма", "Боевик"],
+        image_url="https://m.media-amazon.com/images/I/51A9FQ5YF9L.jpg"
+    ),
+    Movie(
+        id=9,
+        title="Джокер",
+        description="История становления одного из самых известных злодеев.",
+        genres=["Драма", "Триллер"],
+        image_url="https://m.media-amazon.com/images/I/71xBLRBYOiL._AC_SY679_.jpg"
+    ),
+    Movie(
+        id=10,
+        title="Властелин колец: Братство кольца",
+        description="Начало великого путешествия по Средиземью.",
+        genres=["Фэнтези", "Приключения"],
+        image_url="https://m.media-amazon.com/images/I/51Qvs9i5a+L.jpg"
+    ),
 ]
 
 sessions: List[Session] = [
